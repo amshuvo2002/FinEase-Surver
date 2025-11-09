@@ -10,7 +10,8 @@ app.use(cors());
 app.use(express.json());
 
 // ✅ MongoDB Connection URI
-const uri = "mongodb+srv://FinEaseDB:C3tVHQANuLcDTnch@cluster0.sxesek9.mongodb.net/?appName=Cluster0";
+const uri =
+  "mongodb+srv://FinEaseDB:C3tVHQANuLcDTnch@cluster0.sxesek9.mongodb.net/?appName=Cluster0";
 
 // ✅ Create client
 const client = new MongoClient(uri, {
@@ -43,31 +44,20 @@ async function run() {
     // ✅ Read (GET) — Fetch transactions based on user email
     app.get("/transactions", async (req, res) => {
       const email = req.query.email;
-
       const query = email ? { userEmail: email } : {};
       const result = await transactionsCollection.find(query).toArray();
       res.send(result);
     });
 
-    // ✅ DELETE — delete transaction
-    app.delete("/transactions/:id", async (req, res) => {
-      const id = req.params.id;
-      const result = await transactionsCollection.deleteOne({
-        _id: new ObjectId(id),
-      });
-      res.send(result);
-    });
-
-    // ✅ Single Transaction Details
+    // ✅ Single Transaction Details (for DetailsPage & Update.jsx)
     app.get("/transactions/:id", async (req, res) => {
       const id = req.params.id;
-      const result = await transactionsCollection.findOne({
-        _id: new ObjectId(id),
-      });
+      const query = { _id: new ObjectId(id) };
+      const result = await transactionsCollection.findOne(query);
       res.send(result);
     });
 
-    // ✅ Update transaction (PUT)
+    // ✅ Update transaction (PUT) — for Update.jsx
     app.put("/transactions/:id", async (req, res) => {
       const id = req.params.id;
       const updatedData = req.body;
@@ -77,6 +67,15 @@ async function run() {
         { $set: updatedData }
       );
 
+      res.send(result);
+    });
+
+    // ✅ Delete transaction
+    app.delete("/transactions/:id", async (req, res) => {
+      const id = req.params.id;
+      const result = await transactionsCollection.deleteOne({
+        _id: new ObjectId(id),
+      });
       res.send(result);
     });
 
