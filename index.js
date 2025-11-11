@@ -5,15 +5,13 @@ const app = express();
 
 const port = process.env.PORT || 3000;
 
-// middleware
 app.use(cors());
 app.use(express.json());
 
-// ✅ MongoDB Connection URI
 const uri =
   "mongodb+srv://FinEaseDB:C3tVHQANuLcDTnch@cluster0.sxesek9.mongodb.net/?appName=Cluster0";
 
-// ✅ Create client
+
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
