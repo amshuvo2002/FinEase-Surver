@@ -23,9 +23,8 @@ const client = new MongoClient(uri, {
   },
 });
 
-// ✅ Root route
 app.get("/", (req, res) => {
-  res.send("MongoDB Server is Running ✅");
+  res.send("MongoDB Server is Running...");
 });
 
 async function run() {
@@ -35,14 +34,12 @@ async function run() {
     const db = client.db("FinEase_db");
     const transactionsCollection = db.collection("transactions");
 
-    // ✅ Create (POST) — Add transaction
     app.post("/transactions", async (req, res) => {
       const newTransaction = req.body;
       const result = await transactionsCollection.insertOne(newTransaction);
       res.send(result);
     });
 
-    // ✅ Read (GET) — Fetch transactions based on user email
     app.get("/transactions", async (req, res) => {
       const email = req.query.email;
       const query = email ? { userEmail: email } : {};
@@ -50,7 +47,7 @@ async function run() {
       res.send(result);
     });
 
-    // ✅ Single Transaction Details (for DetailsPage & Update.jsx)
+   
     app.get("/transactions/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
@@ -58,7 +55,7 @@ async function run() {
       res.send(result);
     });
 
-    // ✅ Update transaction (PUT) — for Update.jsx
+   
     app.put("/transactions/:id", async (req, res) => {
       const id = req.params.id;
       const updatedData = req.body;
@@ -71,7 +68,7 @@ async function run() {
       res.send(result);
     });
 
-    // ✅ Delete transaction
+   
     app.delete("/transactions/:id", async (req, res) => {
       const id = req.params.id;
       const result = await transactionsCollection.deleteOne({
@@ -80,7 +77,7 @@ async function run() {
       res.send(result);
     });
 
-    // ✅ Test connection
+   
     await client.db("admin").command({ ping: 1 });
     console.log("✅ Successfully connected to MongoDB!");
   } finally {
