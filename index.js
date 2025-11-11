@@ -1,15 +1,18 @@
+require('dotenv').config();
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const express = require("express");
 const cors = require("cors");
 const app = express();
 
 const port = process.env.PORT || 3000;
+console.log(process.env);
+
 
 app.use(cors());
 app.use(express.json());
 
 const uri =
-  "mongodb+srv://FinEaseDB:C3tVHQANuLcDTnch@cluster0.sxesek9.mongodb.net/?appName=Cluster0";
+  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.sxesek9.mongodb.net/?appName=Cluster0`;
 
 
 const client = new MongoClient(uri, {
